@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/league/static/css/main.83612974.css",
-    "main.js": "/league/static/js/main.862dc7c4.js",
+    "main.css": "/league/static/css/main.1655168c.css",
+    "main.js": "/league/static/js/main.6b4193b4.js",
     "index.html": "/league/index.html",
-    "main.83612974.css.map": "/league/static/css/main.83612974.css.map",
-    "main.862dc7c4.js.map": "/league/static/js/main.862dc7c4.js.map"
+    "main.1655168c.css.map": "/league/static/css/main.1655168c.css.map",
+    "main.6b4193b4.js.map": "/league/static/js/main.6b4193b4.js.map"
   },
   "entrypoints": [
-    "static/css/main.83612974.css",
-    "static/js/main.862dc7c4.js"
+    "static/css/main.1655168c.css",
+    "static/js/main.6b4193b4.js"
   ]
 }
