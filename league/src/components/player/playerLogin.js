@@ -25,7 +25,7 @@ const PlayerLogin=({setLoggedInPlayer, leagueData, setLeagueData}) => {
         setLeagueData(newLeagueData); // Take it, good or bad!
         let foundPlayerIndex = -1;
         for (let i = 0; foundPlayerIndex < 0 && i < leagueData.players.length; i++) {
-            if (leagueData.players[i].userId === newUserId) {
+            if (newLeagueData.players[i].userId === newUserId) {
                 foundPlayerIndex = i;
             }
         }
