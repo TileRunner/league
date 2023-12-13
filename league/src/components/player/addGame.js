@@ -10,9 +10,7 @@ const AddGame=({loggedInPlayer, thisLeague, nicknames, thisLeagueGames, submitDa
     useEffect(() => {
         let newGames = [];
         thisLeagueGames.forEach(game => {
-            console.log(`${newPlayer1Id} ${newPlayer2Id} ${JSON.stringify(game)}`);
             if ((game.player1Id === newPlayer1Id) && (game.player2Id === newPlayer2Id)) {
-                console.log('hit');
                 newGames.push({yourScore: game.player1Score, opponentScore: game.player2Score});
             }
         });
@@ -28,7 +26,6 @@ const AddGame=({loggedInPlayer, thisLeague, nicknames, thisLeagueGames, submitDa
         if (isDataAcceptable()) {
             submitData(newPlayer1Id, parseInt(newPlayer1Score), newPlayer2Id, parseInt(newPlayer2Score));
             setNewPlayer1Score(0);
-            setNewPlayer2Id(0);
             setNewPlayer2Score(0);
         }
     }

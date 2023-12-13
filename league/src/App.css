@@ -1,3 +1,12 @@
 Button {
   margin-right: 5px;
 }
+.rightJustify {
+  text-align: right;
+}
+.centerText {
+  text-align: center;
+}
+.smallPad {
+  padding: 20px;
+}

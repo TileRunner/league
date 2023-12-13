@@ -1,5 +1,6 @@
 import {useState,useEffect} from 'react';
 import AddGame from './addGame';
+import Standings from './standings';
 import { callAddGame } from '../../callApi';
 import { Tab, Tabs, Container, Row, Col, Alert } from 'react-bootstrap';
 
@@ -41,7 +42,7 @@ const PlayerPages=({loggedInPlayer, leagueData, setLeagueData}) => {
                 <Alert>Hi {loggedInPlayer.nickname}</Alert>
             </Tab>
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='standings' title='Standings'>
-                <Alert>This is where the league standings will display</Alert>
+                <Standings thisLeague={thisLeague} players={leagueData.players} games={thisLeagueGames}/>
             </Tab>}
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='schedule' title='Schedule'>
                 <Alert>This is where the schedule will display</Alert>
