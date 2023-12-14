@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { callAddLeague, callDeleteLeague } from '../../callApi';
+import { callAddLeague, callUpdateLeague, callDeleteLeague } from '../../callApi';
 import ManagePlayers from './managePlayers';
 import AddLeague from './addLeague';
 import Button from 'react-bootstrap/Button';
@@ -20,6 +20,10 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
     }
     const cancelAddLeague = () => {
         setAddingLeague(false);
+    }
+    const handleUpateLeagueStatus = async(league, newStatus) => {
+        let newLeagueData = await callUpdateLeague(league.id, league.desc, league.startDate, league.endDate, newStatus, league.gamesPerOpp);
+        setLeagueData(newLeagueData);
     }
     const handleDeleteLeague = async(id) => {
         let newLeagueData = await callDeleteLeague(id);
@@ -44,7 +48,7 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
                             <th>Description</th>
                             <th>Status</th>
                             <th>Games per Opp</th>
-                            <th>Action</th>
+                            <th colSpan={3} className='centerText'>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,10 +59,22 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
                             <td>{league.status}</td>
                             <td>{league.gamesPerOpp}</td>
                             <td>
-                                <ButtonGroup aria-label='League actions'>
-                                    <Button variant='primary' onClick={() => { setLeagueId(league.id); } }>Players</Button>
-                                    <Button variant='danger' onClick={() => { handleDeleteLeague(league.id); } }>Delete</Button>
-                                </ButtonGroup>
+                                <Button variant='secondary' onClick={() => { setLeagueId(league.id); } }>Players</Button>
+                            </td>
+                            <td>
+                                {league.status === 'Registration' && 
+                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Active');}}>Activate</Button>
+                                }
+                                {league.status === 'Active' && <ButtonGroup>
+                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Registration');}}>Deactivate</Button>
+                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Closed');}}>Close</Button>
+                                </ButtonGroup>}
+                                {league.status === 'Closed' &&
+                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Active');}}>Reopen</Button>
+                                }
+                            </td>
+                            <td>
+                                <Button variant='danger' onClick={() => { handleDeleteLeague(league.id); } }>Delete</Button>
                             </td>
                         </tr>
                         )}

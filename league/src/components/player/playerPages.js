@@ -3,7 +3,7 @@ import AddGame from './addGame';
 import Standings from './standings';
 import Stats from './stats';
 import { callAddGame } from '../../callApi';
-import { Tab, Tabs, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Tab, Tabs, Container, Row, Col, Alert, Table } from 'react-bootstrap';
 import Register from './register';
 
 const PlayerPages=({loggedInPlayer, setLoggedInPlayer, leagueData, setLeagueData}) => {
@@ -29,19 +29,46 @@ const PlayerPages=({loggedInPlayer, setLoggedInPlayer, leagueData, setLeagueData
         { leagueData.error &&
           <Alert variant='danger'>Error Encountered: {leagueData.errorMessage}</Alert>
         }
-        <Container fluid>
-            <Row>
-                <Col sm='auto'>
-                    User Id: {loggedInPlayer.userId}
-                </Col>
-                <Col sm={'auto'}>
-                    Nickname: {loggedInPlayer.nickname}
-                </Col>
-            </Row>
-        </Container>
-        <Tabs id='player-tabs' activeKey={key} onSelect={(k) => setKey(k)}>
+        <Tabs id='player-tabs' activeKey={key} onSelect={(k) => setKey(k)} className='mb-3' variant='pills'>
             <Tab eventKey='home' title='Home'>
-                <Alert>Hi {loggedInPlayer.nickname}</Alert>
+                <Container fluid>
+                    <Row>
+                        <Col sm='auto'>
+                            <Alert variant='info'>
+                                <Alert.Heading>Player Information:</Alert.Heading>
+                                <Table variant='dark' bordered striped hover>
+                                    <tbody>
+                                        <tr>
+                                            <th>Internal id:</th>
+                                            <td>{loggedInPlayer.id}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>User id:</th>
+                                            <td>{loggedInPlayer.userId}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Nickname:</th>
+                                            <td>{loggedInPlayer.nickname}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>League:</th>
+                                            <td>
+                                                {loggedInPlayer.leagueId === 0 ?
+                                                'Unassigned'
+                                                :
+                                                thisLeague.desc}
+                                            </td>
+                                        </tr>
+                                        {loggedInPlayer.leagueId > 0 && <tr>
+                                            <th>League Status:</th>
+                                            <td>{thisLeague.status}</td>
+                                        </tr>}
+                                    </tbody>
+                                </Table>
+                            </Alert>
+                        </Col>
+                    </Row>
+                </Container>
             </Tab>
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='standings' title='Standings'>
                 <Standings thisLeague={thisLeague} players={leagueData.players} games={thisLeagueGames}/>
@@ -49,7 +76,7 @@ const PlayerPages=({loggedInPlayer, setLoggedInPlayer, leagueData, setLeagueData
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='schedule' title='Schedule'>
                 <Alert>This is where the schedule will display</Alert>
             </Tab>}
-            {loggedInPlayer.leagueId > 0 && <Tab eventKey='addGame' title='Add Score'>
+            {loggedInPlayer.leagueId > 0 && thisLeague.status === 'Active' && <Tab eventKey='addGame' title='Add Score'>
                 <AddGame loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} nicknames={thisLeagueNicknames} thisLeagueGames={thisLeagueGames} submitData={handleSubmitGame} />
             </Tab>}
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='stats' title='Stats'>
