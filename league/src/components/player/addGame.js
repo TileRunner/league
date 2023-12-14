@@ -51,7 +51,7 @@ const AddGame=({loggedInPlayer, thisLeague, nicknames, thisLeagueGames, submitDa
         let numericPattern = /^[0-9]+$/;
         return numericPattern.test(s);
     }
-    return(<Container>
+    return(<Container fluid>
         <Form onSubmit={handleSubmit}>
             <Form.Label as={'h1'}>Enter new game result:</Form.Label>
             <Form.Group as={Row} controlId="playerSelection">

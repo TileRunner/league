@@ -1,6 +1,7 @@
 import {useState,useEffect} from 'react';
 import AddGame from './addGame';
 import Standings from './standings';
+import Stats from './stats';
 import { callAddGame } from '../../callApi';
 import { Tab, Tabs, Container, Row, Col, Alert } from 'react-bootstrap';
 
@@ -51,7 +52,7 @@ const PlayerPages=({loggedInPlayer, leagueData, setLeagueData}) => {
                 <AddGame loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} nicknames={thisLeagueNicknames} thisLeagueGames={thisLeagueGames} submitData={handleSubmitGame} />
             </Tab>}
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='stats' title='Stats'>
-                <Alert>This is where the stats will display</Alert>
+                <Stats loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} players={leagueData.players} games={thisLeagueGames}/>
             </Tab>}
             {loggedInPlayer.leagueId === 0 && <Tab eventKey='register' title='Register'>
                 <Alert>This is where a player can pick a league in the registration phase.</Alert>

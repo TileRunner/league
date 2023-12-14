@@ -41,19 +41,23 @@ const Standings=({thisLeague, players, games}) => {
             if (a.winPct !== b.winPct) {
                 return b.winPct - a.winPct;
             }
-            return b.avgScore - a.avgScore;
+            if (a.avgScore !== b.avgScore) {
+                return b.avgScore - a.avgScore;
+            }
+            return a.avgAgainst - b.avgAgainst;
         })
         setData(newData);
       },[thisLeague, players, games]);
     
-    return(<Container>
+    return(<Container fluid>
         <Row>
             <Col sm='auto'>
                 <Alert variant='info'>
-                    <Alert.Heading>Standings by win % then avg score:</Alert.Heading>
+                    <Alert.Heading>Standings:</Alert.Heading>
                     <Table bordered variant='dark' striped hover size='sm'>
                         <thead>
                             <tr>
+                                <th>Rank</th>
                                 <th className='smallPad'>Nickname</th>
                                 <th className='smallPad centerText'>Win-Loss</th>
                                 <th className='smallPad centerText'>Win %</th>
@@ -62,10 +66,11 @@ const Standings=({thisLeague, players, games}) => {
                         </thead>
                         <tbody>
                             {data.map((item,index) => <tr key={index}>
+                                <td className='rightJustify'>{index+1}</td>
                                 <td>{item.nickname}</td>
                                 <td className='centerText'>{item.wins}-{item.losses}</td>
                                 <td className='centerText'>{item.winPct.toFixed(0)}</td>
-                                <td className='centerText'>{item.avgScore.toFixed(0)}</td>
+                                <td className='centerText'>{item.avgScore.toFixed(1)}</td>
                             </tr>)}
                         </tbody>
                     </Table>
