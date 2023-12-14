@@ -4,8 +4,9 @@ import Standings from './standings';
 import Stats from './stats';
 import { callAddGame } from '../../callApi';
 import { Tab, Tabs, Container, Row, Col, Alert } from 'react-bootstrap';
+import Register from './register';
 
-const PlayerPages=({loggedInPlayer, leagueData, setLeagueData}) => {
+const PlayerPages=({loggedInPlayer, setLoggedInPlayer, leagueData, setLeagueData}) => {
     const [thisLeagueNicknames, setThisLeagueNicknames] = useState([]);
     const [thisLeagueGames, setThisLeagueGames] = useState([]);
     const [thisLeague, setThisLeague] = useState({gamesPerOpp: 0});
@@ -55,7 +56,7 @@ const PlayerPages=({loggedInPlayer, leagueData, setLeagueData}) => {
                 <Stats loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} players={leagueData.players} games={thisLeagueGames}/>
             </Tab>}
             {loggedInPlayer.leagueId === 0 && <Tab eventKey='register' title='Register'>
-                <Alert>This is where a player can pick a league in the registration phase.</Alert>
+                <Register leagueData={leagueData} setLeagueData={setLeagueData} loggedInPlayer={loggedInPlayer} setLoggedInPlayer={setLoggedInPlayer} setKey={setKey}/>
             </Tab>}
         </Tabs>
     </div>)

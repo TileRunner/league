@@ -77,7 +77,6 @@ const Stats=({loggedInPlayer, thisLeague, players, games}) => {
         <Row>
             <Col sm='auto'>
                 <DropdownButton
-                  alignRight
                   title={selId ? `Selected: ${curr.nickname}` : 'Select a value'}
                   onSelect={handleSelectPlayer}>
                     {players.filter(p => p.leagueId === loggedInPlayer.leagueId).map((p,i) =>

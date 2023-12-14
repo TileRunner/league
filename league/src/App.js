@@ -60,7 +60,7 @@ function App() {
         : loggedInPlayer.id === 0 ?
           <PlayerLogin setLoggedInPlayer={setLoggedInPlayer} leagueData={leagueData} setLeagueData={setLeagueData}/>
         :
-          <PlayerPages loggedInPlayer={loggedInPlayer} leagueData={leagueData} setLeagueData={setLeagueData}/>
+          <PlayerPages loggedInPlayer={loggedInPlayer} setLoggedInPlayer={setLoggedInPlayer} leagueData={leagueData} setLeagueData={setLeagueData}/>
         }
       </header>
     </div>
