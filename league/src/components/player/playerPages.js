@@ -2,17 +2,18 @@ import {useState,useEffect} from 'react';
 import AddGame from './addGame';
 import Standings from './standings';
 import Stats from './stats';
+import Schedule from './schedule';
 import { callAddGame } from '../../callApi';
 import { Tab, Tabs, Container, Row, Col, Alert, Table } from 'react-bootstrap';
 import Register from './register';
 
 const PlayerPages=({loggedInPlayer, setLoggedInPlayer, leagueData, setLeagueData}) => {
-    const [thisLeagueNicknames, setThisLeagueNicknames] = useState([]);
+    const [thisLeaguePlayers, setThisLeaguePlayers] = useState([]);
     const [thisLeagueGames, setThisLeagueGames] = useState([]);
     const [thisLeague, setThisLeague] = useState({gamesPerOpp: 0});
     const [key, setKey] = useState('home');
     useEffect(() => {
-        setThisLeagueNicknames(leagueData.players.filter(p => p.leagueId === loggedInPlayer.leagueId));
+        setThisLeaguePlayers(leagueData.players.filter(p => p.leagueId === loggedInPlayer.leagueId));
         setThisLeagueGames(leagueData.games.filter(g => g.leagueId === loggedInPlayer.leagueId));
         if (leagueData.leagues.filter(l => l.id === loggedInPlayer.leagueId).length === 1) {
             setThisLeague(leagueData.leagues.filter(l => l.id === loggedInPlayer.leagueId)[0]);
@@ -74,10 +75,10 @@ const PlayerPages=({loggedInPlayer, setLoggedInPlayer, leagueData, setLeagueData
                 <Standings thisLeague={thisLeague} players={leagueData.players} games={thisLeagueGames}/>
             </Tab>}
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='schedule' title='Schedule'>
-                <Alert>This is where the schedule will display</Alert>
+                <Schedule loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} thisLeaguePlayers={thisLeaguePlayers} thisLeagueGames={thisLeagueGames}/>
             </Tab>}
             {loggedInPlayer.leagueId > 0 && thisLeague.status === 'Active' && <Tab eventKey='addGame' title='Add Score'>
-                <AddGame loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} nicknames={thisLeagueNicknames} thisLeagueGames={thisLeagueGames} submitData={handleSubmitGame} />
+                <AddGame loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} thisLeaguePlayers={thisLeaguePlayers} thisLeagueGames={thisLeagueGames} submitData={handleSubmitGame} />
             </Tab>}
             {loggedInPlayer.leagueId > 0 && <Tab eventKey='stats' title='Stats'>
                 <Stats loggedInPlayer={loggedInPlayer} thisLeague={thisLeague} players={leagueData.players} games={thisLeagueGames}/>

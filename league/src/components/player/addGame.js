@@ -1,7 +1,7 @@
 import {useState,useEffect} from 'react';
 import {Container, Form, Button, Row, Col, Table, Alert} from 'react-bootstrap';
 
-const AddGame=({loggedInPlayer, thisLeague, nicknames, thisLeagueGames, submitData}) => {
+const AddGame=({loggedInPlayer, thisLeague, thisLeaguePlayers, thisLeagueGames, submitData}) => {
     const newPlayer1Id = loggedInPlayer.id;
     const [newPlayer1Score, setNewPlayer1Score] = useState(0);
     const [newPlayer2Id, setNewPlayer2Id] = useState(0);
@@ -59,7 +59,7 @@ const AddGame=({loggedInPlayer, thisLeague, nicknames, thisLeagueGames, submitDa
                 <Col sm={2}>
                     <Form.Select onChange={handleSelectPlayer2}>
                         <option value={0}>Select opponent</option>
-                        {nicknames.map((n,i) =>
+                        {thisLeaguePlayers.map((n,i) =>
                             n.id !== loggedInPlayer.id && <option key={i} value={n.id}>{n.userId}: {n.nickname}</option>
                         )}
                     </Form.Select>
