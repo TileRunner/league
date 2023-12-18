@@ -10,3 +10,6 @@ Button {
 .smallPad {
   padding: 20px;
 }
+.highlight {
+  color: aquamarine;
+}

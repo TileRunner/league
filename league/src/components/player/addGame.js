@@ -53,7 +53,7 @@ const AddGame=({loggedInPlayer, thisLeague, thisLeaguePlayers, thisLeagueGames, 
     }
     return(<Container fluid>
         <Form onSubmit={handleSubmit}>
-            <Form.Label as={'h1'}>Enter new game result:</Form.Label>
+            <Form.Label as={'h1'}>Enter game result for {loggedInPlayer.nickname}:</Form.Label>
             <Form.Group as={Row} controlId="playerSelection">
                 <Form.Label column sm={2}>Opponent:</Form.Label>
                 <Col sm={2}>

@@ -42,7 +42,7 @@ const ManagePlayers=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
         let alphanumericPattern = /^[ A-Za-z0-9]+$/;
         return alphanumericPattern.test(s);
     }
-    return(<Container>
+    return(<Container fluid>
         <Row>
             <Col sm='auto'>
                 <Button onClick={()=>{setLeagueId(-1)}}>Go Back</Button>
@@ -55,39 +55,46 @@ const ManagePlayers=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
           <Alert variant='danger'>Error Encountered: {leagueData.errorMessage}</Alert>
           </Col></Row>
         }
-        <Form onSubmit={handleSubmitPlayer}>
-            <Form.Group controlId="newUserEntry">
-                <Row>
-                    <Col sm={'auto'}>
-                        <Form.Label>New User Id:</Form.Label>
-                    </Col>
-                    <Col sm={'auto'}>
-                        <Form.Control
-                            className="sm-1"
-                            type="text"
-                            value={newUserId}
-                            onChange={e => { setNewUserId(e.target.value); } }
-                            isInvalid={newUserId && !isValidFormat(newUserId)} />
-                        <Form.Control.Feedback type="invalid">Must only use letters and/or numbers and/or spaces and/or dashes</Form.Control.Feedback>
-                    </Col>
-                    <Col sm={'auto'}>
-                        <Form.Label>Nickname:</Form.Label>
-                    </Col>
-                    <Col sm={'auto'}>
-                        <Form.Control
-                            className="sm-1"
-                            type="text"
-                            value={newNickname}
-                            onChange={e => { setNewNickname(e.target.value); } }
-                            isInvalid={newNickname && !isValidFormat(newNickname)} />
-                        <Form.Control.Feedback type="invalid">Must only use letters and/or numbers and/or spaces and/or dashes</Form.Control.Feedback>
-                    </Col>
-                    <Col>
-                        <Button type="submit">Submit</Button>
-                    </Col>
-                </Row>
-            </Form.Group>
-        </Form>
+        <Row>
+            <Col sm='auto'>
+                <Alert variant='info'>
+                    <Alert.Heading>Add new user:</Alert.Heading>
+                    <Form onSubmit={handleSubmitPlayer}>
+                        <Form.Group controlId="newUserEntry">
+                            <Row>
+                                <Col sm={'auto'}>
+                                    <Form.Label>New User Id:</Form.Label>
+                                </Col>
+                                <Col sm={'auto'}>
+                                    <Form.Control
+                                        className="sm-1"
+                                        type="text"
+                                        value={newUserId}
+                                        onChange={e => { setNewUserId(e.target.value); } }
+                                        isInvalid={newUserId && !isValidFormat(newUserId)} />
+                                    <Form.Control.Feedback type="invalid">Must only use letters and/or numbers and/or spaces and/or dashes</Form.Control.Feedback>
+                                </Col>
+                                <Col sm={'auto'}>
+                                    <Form.Label>Nickname:</Form.Label>
+                                </Col>
+                                <Col sm={'auto'}>
+                                    <Form.Control
+                                        className="sm-1"
+                                        type="text"
+                                        value={newNickname}
+                                        onChange={e => { setNewNickname(e.target.value); } }
+                                        isInvalid={newNickname && !isValidFormat(newNickname)} />
+                                    <Form.Control.Feedback type="invalid">Must only use letters and/or numbers and/or spaces and/or dashes</Form.Control.Feedback>
+                                </Col>
+                                <Col>
+                                    <Button type="submit">Submit</Button>
+                                </Col>
+                            </Row>
+                        </Form.Group>
+                    </Form>
+                </Alert>
+            </Col>
+        </Row>
         { leagueData && leagueData.players && leagueData.players.filter(p => p.leagueId === leagueId).length ?
             <Row><Col sm='auto'>
                 <Table striped bordered hover size='sm' variant='dark'>

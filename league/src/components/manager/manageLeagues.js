@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { callAddLeague, callUpdateLeague, callDeleteLeague } from '../../callApi';
 import ManagePlayers from './managePlayers';
+import ManageGames from './manageGames';
 import AddLeague from './addLeague';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -11,7 +12,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
-    const [leagueId, setLeagueId] = useState(-1); // Set to league id when managing players
+    const [leagueIdForPlayers, setLeagueIdForPlayers] = useState(-1); // Set to league id when managing players
+    const [leagueIdForGames, setLeagueIdForGames] = useState(-1); // Set to league id when managing games
     const [addingLeague, setAddingLeague] = useState(false); // Set to true when adding league
     const handleSubmitLeague = async(newDesc, newStartDate, newEndDate, newStatus, newGamesPerOpp) => {
         let newLeagueData = await callAddLeague(newDesc, newStartDate, newEndDate, newStatus, newGamesPerOpp);
@@ -59,7 +61,10 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
                             <td>{league.status}</td>
                             <td>{league.gamesPerOpp}</td>
                             <td>
-                                <Button variant='secondary' onClick={() => { setLeagueId(league.id); } }>Players</Button>
+                                <ButtonGroup>
+                                    <Button variant='secondary' onClick={() => { setLeagueIdForPlayers(league.id); } }>Players</Button>
+                                    <Button variant='secondary' onClick={() => { setLeagueIdForGames(league.id); } }>Games</Button>
+                                </ButtonGroup>
                             </td>
                             <td>
                                 {league.status === 'Registration' && 
@@ -90,8 +95,10 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
     return(<div>
         { leagueData.error ?
           <Alert variant='danger'>Error Encountered: {leagueData.errorMessage}</Alert>
-        : leagueId > -1 ?
-            <ManagePlayers leagueId={leagueId} setLeagueId={setLeagueId} leagueData={leagueData} setLeagueData={setLeagueData}></ManagePlayers>
+        : leagueIdForPlayers > -1 ?
+            <ManagePlayers leagueId={leagueIdForPlayers} setLeagueId={setLeagueIdForPlayers} leagueData={leagueData} setLeagueData={setLeagueData}></ManagePlayers>
+        : leagueIdForGames > -1 ?
+            <ManageGames leagueId={leagueIdForGames} setLeagueId={setLeagueIdForGames} leagueData={leagueData} setLeagueData={setLeagueData}></ManageGames>
         : addingLeague ?
             <AddLeague submitData={handleSubmitLeague} cancelOperation={cancelAddLeague}></AddLeague>
         :
