@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import * as c from '../../constants';
 import { callAddLeague, callUpdateLeague, callDeleteLeague } from '../../callApi';
 import ManagePlayers from './managePlayers';
 import ManageGames from './manageGames';
@@ -48,9 +49,9 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Description</th>
-                            <th>Status</th>
                             <th>Games per Opp</th>
-                            <th colSpan={3} className='centerText'>Action</th>
+                            <th>Status / Action</th>
+                            <th className='centerText'>Manage</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,28 +59,60 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
                             <td>{league.startDate}</td>
                             <td>{league.endDate}</td>
                             <td>{league.desc}</td>
-                            <td>{league.status}</td>
                             <td>{league.gamesPerOpp}</td>
                             <td>
-                                <ButtonGroup>
-                                    <Button variant='secondary' onClick={() => { setLeagueIdForPlayers(league.id); } }>Players</Button>
-                                    <Button variant='secondary' onClick={() => { setLeagueIdForGames(league.id); } }>Games</Button>
-                                </ButtonGroup>
+                                {league.status}
+                                {league.status === c.ST_REG && <span
+                                    data-bs-toggle='tooltip'
+                                    title='Start the league'
+                                    onClick={() => {handleUpateLeagueStatus(league,c.ST_ACT);}}
+                                    className="material-symbols-outlined">
+                                    play_arrow
+                                </span>}
+                                {league.status === c.ST_ACT && <span
+                                    data-bs-toggle='tooltip'
+                                    title='Deactivate back to Registration status'
+                                    onClick={() => {handleUpateLeagueStatus(league,c.ST_REG);}}
+                                    className="material-symbols-outlined">
+                                    undo
+                                </span>}
+                                {league.status === c.ST_ACT && <span
+                                    data-bs-toggle='tooltip'
+                                    title='Close the league'
+                                    onClick={() => {handleUpateLeagueStatus(league,c.ST_CLS);}}
+                                    className="material-symbols-outlined">
+                                    stop
+                                </span>}
+                                {league.status === c.ST_CLS && <span
+                                    data-bs-toggle='tooltip'
+                                    title='Reopen the league'
+                                    onClick={() => {handleUpateLeagueStatus(league,c.ST_ACT);}}
+                                    className="material-symbols-outlined">
+                                    redo
+                                </span>}
+                                {league.status === c.ST_CLS && <span
+                                    data-bs-toggle='tooltip'
+                                    title='Delete the league'
+                                    onClick={() => {handleDeleteLeague(league.id);}}
+                                    className="material-symbols-outlined">
+                                    delete
+                                </span>}
                             </td>
                             <td>
-                                {league.status === 'Registration' && 
-                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Active');}}>Activate</Button>
-                                }
-                                {league.status === 'Active' && <ButtonGroup>
-                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Registration');}}>Deactivate</Button>
-                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Closed');}}>Close</Button>
-                                </ButtonGroup>}
-                                {league.status === 'Closed' &&
-                                    <Button variant='primary' onClick={() => {handleUpateLeagueStatus(league,'Active');}}>Reopen</Button>
-                                }
-                            </td>
-                            <td>
-                                <Button variant='danger' onClick={() => { handleDeleteLeague(league.id); } }>Delete</Button>
+                                <span
+                                    data-bs-toggle='tooltip'
+                                    title='Manage players'
+                                    onClick={() => { setLeagueIdForPlayers(league.id); } }
+                                    className="material-symbols-outlined">
+                                    group
+                                </span>
+                                <span
+                                    data-bs-toggle='tooltip'
+                                    title='Manage games'
+                                    onClick={() => { setLeagueIdForGames(league.id); } }
+                                    className="material-symbols-outlined">
+                                    view_list
+                                </span>
                             </td>
                         </tr>
                         )}

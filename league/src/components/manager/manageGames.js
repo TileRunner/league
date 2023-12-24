@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {callAddGame, callDeleteGame, callUpdateGame} from '../../callApi';
-import {ButtonGroup, Button, Table, Container, Alert, Row, Col, Offcanvas} from 'react-bootstrap';
+import {Button, Table, Container, Alert, Row, Col, Offcanvas} from 'react-bootstrap';
 import FixGame from './fixGame';
 
 const ManageGames=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
@@ -103,47 +103,84 @@ const ManageGames=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
             <Row>
                 <Col sm='auto'>
                 <Alert variant='info'>
-                    <Alert.Heading>Player 1 is the player that entered the result. Both players should enter the result.</Alert.Heading>
-                    <Alert.Heading>If only one player entered the result you will see UNMATCHED. Click COMPLEMENT to add the missing result.</Alert.Heading>
-                    <Alert.Heading>If players entered differing results you will see UNMATCHED. Click FIX to fix the scores.</Alert.Heading>
-                <Table striped bordered hover size='sm' variant='dark'>
-                    <thead>
-                        <tr>
-                            <th>Player 1 User Id</th>
-                            <th>Player 1 Nickname</th>
-                            <th>Player 1 Score</th>
-                            <th>Player 2 User Id</th>
-                            <th>Player 2 Nickname</th>
-                            <th>Player 2 Score</th>
-                            <th>Action</th>
-                            <th>Match</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((game,index)=>
-                            <tr key={index} className={updatingGame && game.id === gameToUpdate.id ? 'highlight' : ''}>
-                                <td>{game.player1UserId}</td>
-                                <td>{game.player1Nickname}</td>
-                                <td>{game.player1Score}</td>
-                                <td>{game.player2UserId}</td>
-                                <td>{game.player2Nickname}</td>
-                                <td>{game.player2Score}</td>
-                                <td>
-                                    <Button onClick={()=>{handleDeleteGame(game.id)}}>DELETE</Button>
-                                </td>
-                                <td>
-                                    {game.scoreMismatch ? 'UNMATCHED' : 'OK'}
-                                    {game.scoreMismatch &&
-                                    <ButtonGroup>
-                                        <Button onClick={()=>{handleAddComplement(game)}}>ADD COMPLEMENT</Button>
-                                        <Button onClick={()=>{handleRequestFix(game)}}>FIX SCORES</Button>
-                                    </ButtonGroup>
-                                    }
-                                </td>
+                    <Alert.Heading as='Container'>Games. Player 1 is the player that entered the result. Both players should enter the result.</Alert.Heading>
+                    <Alert.Heading>
+                        <Row>
+                            <Col sm='auto'>Actions:</Col>
+                            <Col sm='auto'><span className="material-symbols-outlined">delete</span>delete</Col>
+                            <Col sm='auto'><span className="material-symbols-outlined">edit</span>edit scores</Col>
+                            <Col sm='auto'><span className="material-symbols-outlined">sync</span>add game for player 2</Col>
+                        </Row>
+                    </Alert.Heading>
+                    <Table striped bordered hover size='sm' variant='dark'>
+                        <thead>
+                            <tr>
+                            <th colSpan={3} className='centerText'>Player 1</th>
+                            <th colSpan={3} className='centerText'>Player 2</th>
+                            <th colSpan={2}/>
                             </tr>
-                        )}
-                    </tbody>
-                </Table>
+                            <tr>
+                                <th>User Id</th>
+                                <th>Nickname</th>
+                                <th>Score</th>
+                                <th>User Id</th>
+                                <th>Nickname</th>
+                                <th>Score</th>
+                                <th>Action</th>
+                                <th>Flag</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map((game,index)=>
+                                <tr key={index}>
+                                    <td className={updatingGame && game.id === gameToUpdate.id ? 'highlight' : ''}>{game.player1UserId}</td>
+                                    <td className={updatingGame && game.id === gameToUpdate.id ? 'highlight' : ''}>{game.player1Nickname}</td>
+                                    <td className={updatingGame && game.id === gameToUpdate.id ? 'highlight' : ''}>{game.player1Score}</td>
+                                    <td className={updatingGame && game.id === gameToUpdate.id ? 'highlight' : ''}>{game.player2UserId}</td>
+                                    <td className={updatingGame && game.id === gameToUpdate.id ? 'highlight' : ''}>{game.player2Nickname}</td>
+                                    <td className={updatingGame && game.id === gameToUpdate.id ? 'highlight' : ''}>{game.player2Score}</td>
+                                    <td>
+                                        <span
+                                            data-bs-toggle='tooltip'
+                                            title='Delete game'
+                                            onClick={()=>{handleDeleteGame(game.id)}}
+                                            className="material-symbols-outlined">
+                                            delete
+                                        </span>
+                                        <span
+                                            data-bs-toggle='tooltip'
+                                            title='Edit game scores'
+                                            onClick={()=>{handleRequestFix(game)}}
+                                            className="material-symbols-outlined">
+                                            edit
+                                        </span>
+                                        {game.scoreMismatch &&
+                                            <span
+                                                data-bs-toggle='tooltip'
+                                                title='Add complementary result for player 2'
+                                                onClick={()=>{handleAddComplement(game)}}
+                                                className="material-symbols-outlined">
+                                                sync
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        {game.scoreMismatch ?
+                                            <span
+                                            data-bs-toggle='tooltip'
+                                            title='Either waiting for other player to enter result, or result mismatch'
+                                            className="material-symbols-outlined">warning</span>
+                                        :
+                                            <span
+                                            data-bs-toggle='tooltip'
+                                            title='Scores match'
+                                            className="material-symbols-outlined">check</span>
+                                        }
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </Table>
                 </Alert>
                 </Col>
             </Row>

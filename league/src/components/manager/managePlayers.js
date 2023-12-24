@@ -111,7 +111,13 @@ const ManagePlayers=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
                                 <td>{player.userId}</td>
                                 <td>{player.nickname}</td>
                                 <td>
-                                    <Button onClick={()=>{handleDeletePlayer(player.id)}}>DELETE</Button>
+                                    <span
+                                        data-bs-toggle='tooltip'
+                                        title='Delete player'
+                                        onClick={()=>{handleDeletePlayer(player.id)}}
+                                        className="material-symbols-outlined">
+                                        delete
+                                    </span>
                                 </td>
                             </tr>
                         )}

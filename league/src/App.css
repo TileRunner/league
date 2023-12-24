@@ -11,5 +11,7 @@ Button {
   padding: 20px;
 }
 .highlight {
-  color: aquamarine;
+  font-family: cursive;
+  font-weight: bold;
+  color: aqua;
 }
