@@ -4,18 +4,13 @@ import { callAddLeague, callUpdateLeague, callDeleteLeague } from '../../callApi
 import ManagePlayers from './managePlayers';
 import ManageGames from './manageGames';
 import AddLeague from './addLeague';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Table from 'react-bootstrap/Table';
-import Container from 'react-bootstrap/Container';
-import Alert from 'react-bootstrap/Alert';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {Table, Container, Alert, Row, Col, Offcanvas } from 'react-bootstrap';
 
 const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
     const [leagueIdForPlayers, setLeagueIdForPlayers] = useState(-1); // Set to league id when managing players
     const [leagueIdForGames, setLeagueIdForGames] = useState(-1); // Set to league id when managing games
     const [addingLeague, setAddingLeague] = useState(false); // Set to true when adding league
+    const [showInfo, setShowInfo] = useState(false);
     const handleSubmitLeague = async(newDesc, newStartDate, newEndDate, newStatus, newGamesPerOpp) => {
         let newLeagueData = await callAddLeague(newDesc, newStartDate, newEndDate, newStatus, newGamesPerOpp);
         setLeagueData(newLeagueData);
@@ -32,23 +27,63 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
         let newLeagueData = await callDeleteLeague(id);
         setLeagueData(newLeagueData);
     }
-    const MainDisplay = <Container>
+    const MainDisplay = <Container fluid>
+        <Offcanvas show={showInfo} onHide={()=>{setShowInfo(false)}} placement='end'>
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Information</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+                <h2>New League</h2>
+                <p>When you add a league it will have a Status of <span className='bold'>{c.ST_REG}</span>.</p>
+                <h2>{c.ST_REG} Status</h2>
+                <p>Players can join themselves to a league with this state.</p>
+                <p>Click <span className="material-symbols-outlined">play_arrow</span> to
+                   change the Status to <span className='bold'>{c.ST_ACT}</span>.
+                </p>
+                <h2>{c.ST_ACT} Status</h2>
+                <p>Players can enter game results if they are assigned to a league in this state.</p>
+                <p>Click <span className="material-symbols-outlined">undo</span> to change the Status back to <span className='bold'>{c.ST_REG}</span>.</p>
+                <p>Click <span className="material-symbols-outlined">stop</span> to change the Status to <span className='bold'>{c.ST_CLS}</span>.</p>
+                <h2>{c.ST_CLS} Status</h2>
+                <p>This status signifies the completion of the league games.</p>
+                <p>Click <span className="material-symbols-outlined">undo</span> to change the Status back to <span className='bold'>{c.ST_ACT}</span>.</p>
+                <p>Click <span className="material-symbols-outlined">delete</span> to delete the league.</p>
+                <h2>Manage</h2>
+                <p>Click <span className="material-symbols-outlined">group</span> to manage players.</p>
+                <p>Click <span className="material-symbols-outlined">view_list</span> to manage game results.</p>
+            </Offcanvas.Body>
+        </Offcanvas>
         <Row>
-            <Col>
-                <ButtonGroup aria-label="Main Actions">
-                    <Button variant="secondary" onClick={setModeHome}>Home</Button>
-                    <Button variant="primary" onClick={() => { setAddingLeague(true); } }>Add League</Button>
-                </ButtonGroup>
+            <Col sm='auto'>
+                <span
+                 data-bs-toggle='tooltip'
+                 title='Return to main page'
+                 class="material-symbols-outlined"
+                 onClick={setModeHome}
+                >home</span>
+                <span
+                 data-bs-toggle='tooltip'
+                 title='Add a league'
+                 class="material-symbols-outlined"
+                 onClick={() => {setAddingLeague(true);}}
+                >add_circle</span>
+                <span
+                 data-bs-toggle='tooltip'
+                 title='Show information about this page'
+                 class="material-symbols-outlined"
+                 onClick={() => {setShowInfo(true);}}
+                >help</span>
             </Col>
-        </Row>        
+        </Row>
         {leagueData && leagueData.leagues && leagueData.leagues.length ?
-            <Row><Col sm='auto'>
+            <Row><Col sm='auto'><Alert variant='info'>
+                <Alert.Heading>Leagues</Alert.Heading>
                 <Table striped bordered hover size='sm' variant='dark'>
                     <thead>
                         <tr>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Description</th>
+                            <th>Title</th>
                             <th>Games per Opp</th>
                             <th>Status / Action</th>
                             <th className='centerText'>Manage</th>
@@ -85,10 +120,10 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
                                 </span>}
                                 {league.status === c.ST_CLS && <span
                                     data-bs-toggle='tooltip'
-                                    title='Reopen the league'
+                                    title='Reactivate the league'
                                     onClick={() => {handleUpateLeagueStatus(league,c.ST_ACT);}}
                                     className="material-symbols-outlined">
-                                    redo
+                                    undo
                                 </span>}
                                 {league.status === c.ST_CLS && <span
                                     data-bs-toggle='tooltip'
@@ -118,7 +153,7 @@ const ManageLeagues=({setModeHome, leagueData, setLeagueData}) => {
                         )}
                     </tbody>
                 </Table>
-            </Col></Row>
+            </Alert></Col></Row>
             :
             <Row>
                 <Alert variant='secondary'>No leagues yet</Alert>

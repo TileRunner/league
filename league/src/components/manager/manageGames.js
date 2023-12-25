@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {callAddGame, callDeleteGame, callUpdateGame} from '../../callApi';
-import {Button, Table, Container, Alert, Row, Col, Offcanvas} from 'react-bootstrap';
+import {Table, Container, Alert, Row, Col, Offcanvas} from 'react-bootstrap';
 import FixGame from './fixGame';
 
 const ManageGames=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
@@ -8,6 +8,8 @@ const ManageGames=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
     const [data, setData] = useState([]); // Games organized for display
     const [updatingGame, setUpdatingGame] = useState(false);
     const [gameToUpdate, setGameToUpdate] = useState({});
+    const [showInfo, setShowInfo] = useState(false);
+
     useEffect(() => {
         function checkLeagueId(entry) {
             return entry.id === leagueId;
@@ -87,12 +89,31 @@ const ManageGames=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
         setUpdatingGame(true);
     }
     return(<Container fluid>
+        <Offcanvas show={showInfo} onHide={()=>{setShowInfo(false)}} placement='end'>
+            <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Information</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+                <p>Player 1 is the player that entered the result. Both players should enter the result, so you should see each game again with the player order reversed.</p>
+                <p>Click <span className="material-symbols-outlined">delete</span> to delete the corresponding entry.</p>
+                <p>Click <span className="material-symbols-outlined">edit</span>to edit the scores of the corresponding entry.</p>
+                <p>Click <span className="material-symbols-outlined">sync</span>to add the corresponding complementary entry. Use this when only one player entered the results for a game.</p>
+            </Offcanvas.Body>
+        </Offcanvas>
         <Row>
             <Col sm='auto'>
-                <Button onClick={()=>{setLeagueId(-1)}}>Go Back</Button>
-            </Col>
-            <Col sm='auto'>
-                <Alert variant='secondary'>League: {thisLeague.desc}</Alert>
+                <span
+                 data-bs-toggle='tooltip'
+                 title='Return to main page'
+                 class="material-symbols-outlined"
+                 onClick={() => {setLeagueId(-1);}}
+                >home</span>
+                <span
+                 data-bs-toggle='tooltip'
+                 title='Show information about this page'
+                 class="material-symbols-outlined"
+                 onClick={() => {setShowInfo(true);}}
+                >help</span>
             </Col>
         </Row>
         { leagueData.error && <Row><Col>
@@ -103,15 +124,7 @@ const ManageGames=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
             <Row>
                 <Col sm='auto'>
                 <Alert variant='info'>
-                    <Alert.Heading as='Container'>Games. Player 1 is the player that entered the result. Both players should enter the result.</Alert.Heading>
-                    <Alert.Heading>
-                        <Row>
-                            <Col sm='auto'>Actions:</Col>
-                            <Col sm='auto'><span className="material-symbols-outlined">delete</span>delete</Col>
-                            <Col sm='auto'><span className="material-symbols-outlined">edit</span>edit scores</Col>
-                            <Col sm='auto'><span className="material-symbols-outlined">sync</span>add game for player 2</Col>
-                        </Row>
-                    </Alert.Heading>
+                    <Alert.Heading as='Container'>Games for "{thisLeague.desc}":</Alert.Heading>
                     <Table striped bordered hover size='sm' variant='dark'>
                         <thead>
                             <tr>

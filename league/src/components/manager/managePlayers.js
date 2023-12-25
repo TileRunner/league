@@ -45,7 +45,12 @@ const ManagePlayers=({leagueId, setLeagueId, leagueData, setLeagueData}) => {
     return(<Container fluid>
         <Row>
             <Col sm='auto'>
-                <Button onClick={()=>{setLeagueId(-1)}}>Go Back</Button>
+                <span
+                 data-bs-toggle='tooltip'
+                 title='Return to main page'
+                 class="material-symbols-outlined"
+                 onClick={() => {setLeagueId(-1);}}
+                >home</span>
             </Col>
             <Col sm='auto'>
                 <Alert variant='secondary'>League: {thisLeague.desc}</Alert>

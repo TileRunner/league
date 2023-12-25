@@ -49,7 +49,7 @@ function App() {
     </Container>)
   }
   return (
-    <div>
+    <div className='app'>
       <header>
         { leagueData.error ?
           <h1>Error Encountered: {leagueData.errorMessage}</h1>

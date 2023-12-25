@@ -1,3 +1,6 @@
+.app {
+  background-color: burlywood;
+}
 Button {
   margin-right: 5px;
 }
@@ -14,4 +17,7 @@ Button {
   font-family: cursive;
   font-weight: bold;
   color: aqua;
+}
+.bold {
+  font-weight: bold;
 }
